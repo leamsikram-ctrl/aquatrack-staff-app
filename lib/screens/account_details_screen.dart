@@ -99,16 +99,16 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
               // Offline Origin Banner if applicable
               if (widget.isOfflineResult) ...[
                 Container(
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
                     color: AppTheme.brandBlueLight,
-                    border: Border.all(color: AppTheme.brandBlue, width: 1.5),
+                    border: Border.all(color: AppTheme.brandBlue, width: 1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: const Row(
                     children: [
-                      Icon(Icons.cloud_off, size: 14, color: AppTheme.brandBlue),
+                      Icon(Icons.cloud_off, size: 16, color: AppTheme.brandBlue),
                       SizedBox(width: 8),
                       Expanded(
                         child: Text(
@@ -127,11 +127,11 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
               if (_syncMessage != null) ...[
                 Container(
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
                   decoration: BoxDecoration(
                     color: AppTheme.brandWhite,
-                    border: Border.all(color: AppTheme.brandBlack, width: 1.5),
+                    border: Border.all(color: AppTheme.brandBlack, width: 1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -145,14 +145,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                 ),
               ],
 
-              // Meter Hardware Card
+              // Meter Hardware Card with Hard Shadow
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppTheme.brandWhite,
-                  border: Border.all(color: const Color(0x33000000), width: 1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: AppTheme.cardDecoration(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -168,11 +164,11 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
                             color: m.status == 'active' ? AppTheme.brandBlue : AppTheme.brandWhite,
                             border: Border.all(color: AppTheme.brandBlack, width: 1),
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             m.status.toUpperCase(),
@@ -195,14 +191,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
               const SizedBox(height: 16),
 
-              // Consumer & Service Account Card
+              // Consumer & Service Account Card with Hard Shadow
               Container(
                 padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: AppTheme.brandWhite,
-                  border: Border.all(color: const Color(0x33000000), width: 1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                decoration: AppTheme.cardDecoration(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -223,10 +215,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                       _buildRow('Service Address', c.address ?? 'Customer Residence'),
                     ] else ...[
                       Container(
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: AppTheme.brandBlueLight,
-                          borderRadius: BorderRadius.circular(6),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text(
                           'Unassigned Hardware: This meter is currently available in the Sinacaban inventory. It has not yet been linked to a customer property.',
@@ -244,14 +236,10 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
               const SizedBox(height: 16),
 
-              // Offline Sync Manager Card
+              // Offline Sync Manager Card with Hard Shadow
               Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: AppTheme.brandWhite,
-                  border: Border.all(color: const Color(0x26000000), width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
+                padding: const EdgeInsets.all(16),
+                decoration: AppTheme.cardDecoration(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -275,9 +263,9 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     OutlinedButton.icon(
-                      icon: const Icon(Icons.cloud_download_outlined, size: 14),
+                      icon: const Icon(Icons.cloud_download_outlined, size: 16),
                       label: Text(_isSyncing ? 'Syncing...' : 'Sync Full Sinacaban Meter Registry'),
                       onPressed: _isSyncing ? null : _handleSyncOfflineDatabase,
                     ),
@@ -300,18 +288,18 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
   Widget _buildRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 130,
+            width: 150,
             child: Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: AppTheme.uniformFontSize,
                 fontWeight: FontWeight.bold,
-                color: const Color(0x99000000),
+                color: Color(0x99000000),
               ),
             ),
           ),

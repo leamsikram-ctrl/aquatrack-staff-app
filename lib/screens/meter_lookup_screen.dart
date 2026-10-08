@@ -71,7 +71,7 @@ class _MeterLookupScreenState extends State<MeterLookupScreen> {
         title: const Text('MANUAL METER LOOKUP'),
       ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -96,10 +96,10 @@ class _MeterLookupScreenState extends State<MeterLookupScreen> {
 
               if (_errorMessage != null) ...[
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: AppTheme.brandWhite,
-                    border: Border.all(color: AppTheme.brandBlack, width: 1.5),
+                    border: Border.all(color: AppTheme.brandBlack, width: 1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -134,39 +134,74 @@ class _MeterLookupScreenState extends State<MeterLookupScreen> {
               ElevatedButton.icon(
                 icon: _isLoading
                     ? const SizedBox(
-                        width: 12,
-                        height: 12,
+                        width: 14,
+                        height: 14,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           color: AppTheme.brandWhite,
                         ),
                       )
-                    : const Icon(Icons.search, size: 14),
+                    : const Icon(Icons.search, size: 16),
                 label: const Text('Search Meter Registry'),
                 onPressed: _isLoading ? null : _handleLookup,
               ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  const Text('Quick Test: ', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                  const SizedBox(width: 6),
+                  ActionChip(
+                    label: const Text('MTR-SIN-0001', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                    backgroundColor: AppTheme.brandWhite,
+                    side: const BorderSide(color: Color(0x26000000)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    onPressed: () {
+                      _queryController.text = 'MTR-SIN-0001';
+                      _handleLookup();
+                    },
+                  ),
+                  const SizedBox(width: 6),
+                  ActionChip(
+                    label: const Text('MTR-SIN-0002', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                    backgroundColor: AppTheme.brandWhite,
+                    side: const BorderSide(color: Color(0x26000000)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    onPressed: () {
+                      _queryController.text = 'MTR-SIN-0002';
+                      _handleLookup();
+                    },
+                  ),
+                ],
+              ),
 
               const SizedBox(height: 24),
-              const Divider(color: Color(0x1A000000)),
-              const SizedBox(height: 12),
 
-              const Text(
-                'Sinacaban Utility Quick Reference:',
-                style: TextStyle(
-                  fontSize: AppTheme.uniformFontSize,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.brandBlack,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                '• Standard Sinacaban physical meters format: MTR-SIN-####\n'
-                '• Customer account numbers: ACC-YYYY-####\n'
-                '• Lookups will automatically search both online API and local offline cached storage.',
-                style: TextStyle(
-                  fontSize: AppTheme.uniformFontSize,
-                  color: const Color(0xB3000000),
-                  height: 1.5,
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: AppTheme.cardDecoration(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Sinacaban Utility Quick Reference:',
+                      style: TextStyle(
+                        fontSize: AppTheme.uniformFontSize,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.brandBlack,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      '• Standard Sinacaban physical meters format: MTR-SIN-####\n'
+                      '• Customer account numbers: ACC-YYYY-####\n'
+                      '• Lookups will automatically search both online API and local offline cached storage.',
+                      style: TextStyle(
+                        fontSize: AppTheme.uniformFontSize,
+                        color: Color(0x99000000),
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

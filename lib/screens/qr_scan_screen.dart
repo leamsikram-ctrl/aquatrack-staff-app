@@ -75,8 +75,8 @@ class _QrScanScreenState extends State<QrScanScreen> {
         builder: (ctx) => AlertDialog(
           backgroundColor: AppTheme.brandWhite,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: const BorderSide(color: AppTheme.brandBlack, width: 1.5),
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: Color(0x26000000), width: 1),
           ),
           title: const Text(
             'QR Token Not Recognized',
@@ -184,6 +184,38 @@ class _QrScanScreenState extends State<QrScanScreen> {
                   MobileScanner(
                     controller: _scannerController,
                     onDetect: _onDetect,
+                    errorBuilder: (context, error) {
+                      return Container(
+                        color: AppTheme.brandWhite,
+                        padding: const EdgeInsets.all(24),
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.videocam_off_outlined, size: 40, color: AppTheme.brandBlack),
+                            const SizedBox(height: 12),
+                            const Text(
+                              'Camera feed unavailable or permissions required.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: AppTheme.uniformFontSize,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.brandBlack,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'You can use the manual lookup button below for quick browser testing.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: AppTheme.uniformFontSize,
+                                color: AppTheme.brandBlack,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
 
                   // Viewfinder Reticle Overlay
@@ -192,7 +224,7 @@ class _QrScanScreenState extends State<QrScanScreen> {
                     height: 220,
                     decoration: BoxDecoration(
                       border: Border.all(color: AppTheme.brandBlue, width: 2.5),
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
 

@@ -83,8 +83,8 @@ class _SignInScreenState extends State<SignInScreen> {
       builder: (ctx) => AlertDialog(
         backgroundColor: AppTheme.brandWhite,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: AppTheme.brandBlack, width: 1),
+          borderRadius: BorderRadius.circular(12),
+          side: const BorderSide(color: Color(0x26000000), width: 1),
         ),
         title: const Text(
           'API Server Connection',
@@ -99,7 +99,7 @@ class _SignInScreenState extends State<SignInScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Set backend endpoint URL (e.g. 10.0.2.2:8000/api/v1 for Android Emulator, or LAN IP):',
+              'Set backend endpoint URL for your network:',
               style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack),
             ),
             const SizedBox(height: 8),
@@ -109,6 +109,39 @@ class _SignInScreenState extends State<SignInScreen> {
               decoration: const InputDecoration(
                 labelText: 'Base URL',
               ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Quick Presets:',
+              style: TextStyle(fontSize: AppTheme.uniformFontSize, fontWeight: FontWeight.bold, color: AppTheme.brandBlack),
+            ),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                ActionChip(
+                  label: const Text('Localhost (localhost:8000)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                  backgroundColor: AppTheme.brandWhite,
+                  side: const BorderSide(color: Color(0x26000000)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  onPressed: () => urlController.text = 'http://localhost:8000/api/v1',
+                ),
+                ActionChip(
+                  label: const Text('Wi-Fi LAN (10.22.83.119)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                  backgroundColor: AppTheme.brandWhite,
+                  side: const BorderSide(color: Color(0x26000000)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  onPressed: () => urlController.text = 'http://10.22.83.119:8000/api/v1',
+                ),
+                ActionChip(
+                  label: const Text('Emulator (10.0.2.2)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                  backgroundColor: AppTheme.brandWhite,
+                  side: const BorderSide(color: Color(0x26000000)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  onPressed: () => urlController.text = 'http://10.0.2.2:8000/api/v1',
+                ),
+              ],
             ),
           ],
         ),
@@ -121,11 +154,15 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              setState(() {
-                widget.apiService.baseUrl = urlController.text.trim();
-              });
-              Navigator.of(ctx).pop();
+            onPressed: () async {
+              final newUrl = urlController.text.trim();
+              if (newUrl.isNotEmpty) {
+                await OfflineStorageService.saveBaseUrl(newUrl);
+                setState(() {
+                  widget.apiService.baseUrl = newUrl;
+                });
+              }
+              if (ctx.mounted) Navigator.of(ctx).pop();
             },
             child: const Text('Save Endpoint'),
           ),
@@ -151,18 +188,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   // App Brand Mark
                   Center(
                     child: Container(
-                      width: 48,
-                      height: 48,
+                      width: 44,
+                      height: 44,
                       decoration: BoxDecoration(
                         color: AppTheme.brandBlue,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: AppTheme.brandBlack, width: 1.5),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: AppTheme.brandBlack, width: 1),
                       ),
                       child: const Center(
                         child: Text(
                           'AT',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: AppTheme.uniformFontSize,
                             fontWeight: FontWeight.bold,
                             color: AppTheme.brandWhite,
                           ),
@@ -177,15 +214,15 @@ class _SignInScreenState extends State<SignInScreen> {
                     style: TextStyle(
                       fontSize: AppTheme.uniformFontSize,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.0,
+                      letterSpacing: 0.5,
                       color: AppTheme.brandBlack,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
+                  const Text(
                     'SIWASS Sinacaban Municipal Staff & Technician Portal',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: AppTheme.uniformFontSize,
                       color: Color(0x99000000),
                     ),
@@ -194,10 +231,10 @@ class _SignInScreenState extends State<SignInScreen> {
 
                   if (_errorMessage != null) ...[
                     Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: AppTheme.brandWhite,
-                        border: Border.all(color: AppTheme.brandBlack, width: 1.5),
+                        border: Border.all(color: AppTheme.brandBlack, width: 1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -212,14 +249,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(height: 16),
                   ],
 
-                  // Sign-in Fields
+                  // Sign-in Fields Card with Hard Shadow
                   Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: AppTheme.brandWhite,
-                      border: Border.all(color: const Color(0x33000000), width: 1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                    padding: const EdgeInsets.all(20),
+                    decoration: AppTheme.cardDecoration(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -264,6 +297,17 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 )
                               : const Text('Sign In as Staff'),
+                        ),
+                        const SizedBox(height: 8),
+                        OutlinedButton(
+                          onPressed: () {
+                            setState(() {
+                              _loginController.text = 'staff@siwass.gov';
+                              _passwordController.text = 'password123';
+                              _errorMessage = null;
+                            });
+                          },
+                          child: const Text('Quick Fill Demo Credentials'),
                         ),
                       ],
                     ),

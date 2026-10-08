@@ -30,6 +30,11 @@ class _StaffAppState extends State<StaffApp> {
   }
 
   void _checkInitialAuthState() async {
+    final savedBaseUrl = await OfflineStorageService.getBaseUrl();
+    if (savedBaseUrl != null && savedBaseUrl.isNotEmpty) {
+      _apiService.baseUrl = savedBaseUrl;
+    }
+
     final token = await OfflineStorageService.getToken();
     final termsAccepted = await OfflineStorageService.isTermsAccepted();
 

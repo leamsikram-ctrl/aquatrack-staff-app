@@ -8,6 +8,18 @@ class OfflineStorageService {
   static const String _keyOfflineMeters = 'offline_meters_cache';
   static const String _keyLastSyncedAt = 'last_synced_at';
   static const String _keyTermsAccepted = 'terms_accepted';
+  static const String _keyBaseUrl = 'api_base_url';
+
+  // Server Base URL Persistence
+  static Future<void> saveBaseUrl(String url) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_keyBaseUrl, url);
+  }
+
+  static Future<String?> getBaseUrl() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_keyBaseUrl);
+  }
 
   // Token & Auth Persistence
   static Future<void> saveToken(String token) async {

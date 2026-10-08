@@ -2,26 +2,66 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   // Strict 3-Color Palette
+  // 1. Blue (Primary Brand & Interactive Accent): #1E6FD9
+  // 2. White (Base Surfaces, Canvas, Cards): #FFFFFF
+  // 3. Black (All Text & Structural Lines): #000000
   static const Color brandBlue = Color(0xFF1E6FD9);
   static const Color brandBlueLight = Color(0xFFF0F6FD);
   static const Color brandWhite = Color(0xFFFFFFFF);
   static const Color brandBlack = Color(0xFF000000);
 
-  // Uniform 10px Typography
-  static const double uniformFontSize = 10.0;
+  // Strict Uniform 14px Typography (Inter)
+  static const double uniformFontSize = 14.0;
 
   static final TextStyle baseStyle = const TextStyle(
     fontFamily: 'Inter',
     fontSize: uniformFontSize,
     color: brandBlack,
-    letterSpacing: 0.1,
+    letterSpacing: 0.0,
+    height: 1.4,
   );
+
+  // Hard Shadows & Elevations (Matching Frontend SaaS Finish)
+  // Card Hard Shadow: shadow-[3px_3px_0px_0px_rgba(0,0,0,0.15)]
+  static const List<BoxShadow> cardShadow = [
+    BoxShadow(
+      color: Color(0x26000000), // rgba(0,0,0,0.15)
+      offset: Offset(3, 3),
+      blurRadius: 0,
+      spreadRadius: 0,
+    ),
+  ];
+
+  // Shelf Divider Shadow: shadow-[0_2px_0px_0px_rgba(0,0,0,0.06)]
+  static const List<BoxShadow> shelfShadow = [
+    BoxShadow(
+      color: Color(0x10000000), // rgba(0,0,0,0.06)
+      offset: Offset(0, 2),
+      blurRadius: 0,
+      spreadRadius: 0,
+    ),
+  ];
+
+  // Standard Card Box Decoration
+  static BoxDecoration cardDecoration({
+    Color backgroundColor = brandWhite,
+    Color borderColor = const Color(0x26000000), // border-black/15
+    bool withShadow = true,
+  }) {
+    return BoxDecoration(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(12), // rounded-xl (12px)
+      border: Border.all(color: borderColor, width: 1),
+      boxShadow: withShadow ? cardShadow : null,
+    );
+  }
 
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: brandWhite,
       primaryColor: brandBlue,
+      fontFamily: 'Inter',
       colorScheme: const ColorScheme.light(
         primary: brandBlue,
         onPrimary: brandWhite,
@@ -38,7 +78,7 @@ class AppTheme {
         centerTitle: false,
         titleTextStyle: baseStyle.copyWith(
           fontWeight: FontWeight.bold,
-          letterSpacing: 0.5,
+          letterSpacing: 0.2,
         ),
         shape: const Border(
           bottom: BorderSide(color: Color(0x1A000000), width: 1),
@@ -56,7 +96,7 @@ class AppTheme {
         titleSmall: baseStyle.copyWith(fontWeight: FontWeight.bold),
         bodyLarge: baseStyle,
         bodyMedium: baseStyle,
-        bodySmall: baseStyle.copyWith(color: const Color(0xB3000000)),
+        bodySmall: baseStyle.copyWith(color: const Color(0x99000000)),
         labelLarge: baseStyle.copyWith(fontWeight: FontWeight.bold),
         labelMedium: baseStyle.copyWith(fontWeight: FontWeight.w500),
         labelSmall: baseStyle,
@@ -64,16 +104,16 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: brandWhite,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         hintStyle: baseStyle.copyWith(color: const Color(0x66000000)),
         labelStyle: baseStyle.copyWith(fontWeight: FontWeight.bold),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Color(0x33000000), width: 1),
+          borderRadius: BorderRadius.circular(8), // rounded-lg (8px)
+          borderSide: const BorderSide(color: Color(0x26000000), width: 1),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Color(0x33000000), width: 1),
+          borderSide: const BorderSide(color: Color(0x26000000), width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -86,20 +126,20 @@ class AppTheme {
           foregroundColor: brandWhite,
           elevation: 0,
           textStyle: baseStyle.copyWith(fontWeight: FontWeight.bold),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8), // rounded-lg (8px)
           ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: brandBlack,
-          side: const BorderSide(color: Color(0x33000000), width: 1),
+          side: const BorderSide(color: Color(0x26000000), width: 1),
           textStyle: baseStyle.copyWith(fontWeight: FontWeight.bold),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8), // rounded-lg (8px)
           ),
         ),
       ),
@@ -107,8 +147,8 @@ class AppTheme {
         color: brandWhite,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: const BorderSide(color: Color(0x1A000000), width: 1),
+          borderRadius: BorderRadius.circular(12), // rounded-xl (12px)
+          side: const BorderSide(color: Color(0x26000000), width: 1),
         ),
         margin: EdgeInsets.zero,
       ),

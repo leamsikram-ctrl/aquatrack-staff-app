@@ -46,7 +46,7 @@ class _TermsScreenState extends State<TermsScreen> {
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppTheme.brandBlueLight,
-                  border: Border.all(color: const Color(0x33000000), width: 1),
+                  border: Border.all(color: const Color(0x26000000), width: 1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
@@ -62,11 +62,7 @@ class _TermsScreenState extends State<TermsScreen> {
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppTheme.brandWhite,
-                    border: Border.all(color: const Color(0x26000000), width: 1),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  decoration: AppTheme.cardDecoration(),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

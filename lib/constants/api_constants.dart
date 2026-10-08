@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart';
+
 class ApiConstants {
   // 10.0.2.2 maps to host machine localhost in Android Emulator
-  // Can be configured to custom LAN IP or domain
-  static const String defaultBaseUrl = 'http://10.0.2.2:8000/api/v1';
+  // localhost maps to host machine in Web / Desktop browser
+  static const String emulatorBaseUrl = 'http://10.0.2.2:8000/api/v1';
+  static const String webBaseUrl = 'http://localhost:8000/api/v1';
+
+  static String get defaultBaseUrl => kIsWeb ? webBaseUrl : emulatorBaseUrl;
 
   static const String loginEndpoint = '/auth/login';
   static const String termsEndpoint = '/auth/consent';
