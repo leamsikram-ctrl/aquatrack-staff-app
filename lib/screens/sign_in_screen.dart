@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../services/offline_storage_service.dart';
@@ -52,6 +53,9 @@ class _SignInScreenState extends State<SignInScreen> {
     });
 
     if (result.isSuccess) {
+      // After login, download the meter list and store it on the phone per Section 10.B.2
+      await widget.apiService.syncOfflineMeters();
+
       final termsAccepted = await OfflineStorageService.isTermsAccepted();
       if (!mounted) return;
 
@@ -110,39 +114,41 @@ class _SignInScreenState extends State<SignInScreen> {
                 labelText: 'Base URL',
               ),
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Quick Presets:',
-              style: TextStyle(fontSize: AppTheme.uniformFontSize, fontWeight: FontWeight.bold, color: AppTheme.brandBlack),
-            ),
-            const SizedBox(height: 6),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: [
-                ActionChip(
-                  label: const Text('Localhost (localhost:8000)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
-                  backgroundColor: AppTheme.brandWhite,
-                  side: const BorderSide(color: Color(0x26000000)),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  onPressed: () => urlController.text = 'http://localhost:8000/api/v1',
-                ),
-                ActionChip(
-                  label: const Text('Wi-Fi LAN (10.22.83.119)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
-                  backgroundColor: AppTheme.brandWhite,
-                  side: const BorderSide(color: Color(0x26000000)),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  onPressed: () => urlController.text = 'http://10.22.83.119:8000/api/v1',
-                ),
-                ActionChip(
-                  label: const Text('Emulator (10.0.2.2)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
-                  backgroundColor: AppTheme.brandWhite,
-                  side: const BorderSide(color: Color(0x26000000)),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  onPressed: () => urlController.text = 'http://10.0.2.2:8000/api/v1',
-                ),
-              ],
-            ),
+            if (!kReleaseMode) ...[
+              const SizedBox(height: 10),
+              const Text(
+                'Quick Presets:',
+                style: TextStyle(fontSize: AppTheme.uniformFontSize, fontWeight: FontWeight.bold, color: AppTheme.brandBlack),
+              ),
+              const SizedBox(height: 6),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  ActionChip(
+                    label: const Text('Localhost (localhost:8000)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                    backgroundColor: AppTheme.brandWhite,
+                    side: const BorderSide(color: Color(0x26000000)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    onPressed: () => urlController.text = 'http://localhost:8000/api/v1',
+                  ),
+                  ActionChip(
+                    label: const Text('Wi-Fi LAN (10.22.83.119)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                    backgroundColor: AppTheme.brandWhite,
+                    side: const BorderSide(color: Color(0x26000000)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    onPressed: () => urlController.text = 'http://10.22.83.119:8000/api/v1',
+                  ),
+                  ActionChip(
+                    label: const Text('Emulator (10.0.2.2)', style: TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack)),
+                    backgroundColor: AppTheme.brandWhite,
+                    side: const BorderSide(color: Color(0x26000000)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    onPressed: () => urlController.text = 'http://10.0.2.2:8000/api/v1',
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
         actions: [
@@ -298,35 +304,39 @@ class _SignInScreenState extends State<SignInScreen> {
                                 )
                               : const Text('Sign In as Staff'),
                         ),
-                        const SizedBox(height: 8),
-                        OutlinedButton(
-                          onPressed: () {
-                            setState(() {
-                              _loginController.text = 'staff@siwass.gov';
-                              _passwordController.text = 'password123';
-                              _errorMessage = null;
-                            });
-                          },
-                          child: const Text('Quick Fill Demo Credentials'),
-                        ),
+                        if (!kReleaseMode) ...[
+                          const SizedBox(height: 8),
+                          OutlinedButton(
+                            onPressed: () {
+                              setState(() {
+                                _loginController.text = 'staff@siwass.gov';
+                                _passwordController.text = 'password123';
+                                _errorMessage = null;
+                              });
+                            },
+                            child: const Text('Quick Fill Demo Credentials'),
+                          ),
+                        ],
                       ],
                     ),
                   ),
 
-                  const SizedBox(height: 16),
-                  Center(
-                    child: TextButton(
-                      onPressed: _showServerSettings,
-                      child: Text(
-                        'Configure Server: ${widget.apiService.baseUrl}',
-                        style: const TextStyle(
-                          fontSize: AppTheme.uniformFontSize,
-                          color: Color(0x99000000),
-                          decoration: TextDecoration.underline,
+                  if (!kReleaseMode) ...[
+                    const SizedBox(height: 16),
+                    Center(
+                      child: TextButton(
+                        onPressed: _showServerSettings,
+                        child: Text(
+                          'Configure Server: ${widget.apiService.baseUrl}',
+                          style: const TextStyle(
+                            fontSize: AppTheme.uniformFontSize,
+                            color: Color(0x99000000),
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),

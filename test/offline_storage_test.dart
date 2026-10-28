@@ -11,14 +11,29 @@ void main() {
   });
 
   group('OfflineStorageService', () {
-    test('persists and retrieves auth token', () async {
+    test('persists and retrieves auth token and clears all on logout', () async {
       expect(await OfflineStorageService.getToken(), isNull);
 
       await OfflineStorageService.saveToken('test_sanctum_token_123');
       expect(await OfflineStorageService.getToken(), equals('test_sanctum_token_123'));
 
+      // Populate meters and last sync
+      await OfflineStorageService.saveOfflineMeters([
+        MeterData(
+          meterId: 1,
+          meterNumber: 'MTR-SIN-0001',
+          qrToken: 'qr-001',
+          status: 'active',
+        ),
+      ]);
+      expect(await OfflineStorageService.hasOfflineMeters(), isTrue);
+
+      // Logout removes token and the stored list per Section 10.F
       await OfflineStorageService.clearAuth();
       expect(await OfflineStorageService.getToken(), isNull);
+      expect(await OfflineStorageService.hasOfflineMeters(), isFalse);
+      expect(await OfflineStorageService.getOfflineMeters(), isEmpty);
+      expect(await OfflineStorageService.getLastSyncedAt(), isNull);
     });
 
     test('persists terms acceptance state', () async {

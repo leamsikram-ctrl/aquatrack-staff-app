@@ -38,10 +38,10 @@ class ApiService {
         final user = body['user'] as Map<String, dynamic>;
         final role = user['role'] as String;
 
-        // Staff and Admin accounts only per spec
-        if (role != 'staff' && role != 'admin') {
+        // Staff accounts only per AquaTrack specification
+        if (role != 'staff') {
           return ApiResult(
-            errorMessage: 'Access restricted: Account role ($role) is not authorized for staff field scanning.',
+            errorMessage: 'Access restricted: Only staff accounts can log in.',
           );
         }
 
@@ -82,22 +82,37 @@ class ApiService {
         return ApiResult(data: meter);
       } else {
         // Fallback to offline cache
+        final hasCache = await OfflineStorageService.hasOfflineMeters();
+        if (!hasCache) {
+          return ApiResult(
+            errorMessage: 'No meters stored on device. Connect to the internet once to sync the meter list.',
+            isOffline: true,
+          );
+        }
         final cached = await OfflineStorageService.findMeterByQrToken(token);
         if (cached != null) {
           return ApiResult(data: cached, isOffline: true);
         }
         return ApiResult(
-          errorMessage: 'Meter not found on server or local offline cache for QR token.',
+          errorMessage: 'Meter not recognized',
+          isOffline: true,
         );
       }
     } catch (_) {
       // Offline fallback
+      final hasCache = await OfflineStorageService.hasOfflineMeters();
+      if (!hasCache) {
+        return ApiResult(
+          errorMessage: 'No meters stored on device. Connect to the internet once to sync the meter list.',
+          isOffline: true,
+        );
+      }
       final cached = await OfflineStorageService.findMeterByQrToken(token);
       if (cached != null) {
         return ApiResult(data: cached, isOffline: true);
       }
       return ApiResult(
-        errorMessage: 'Network offline. QR token was not found in the local offline cache.',
+        errorMessage: 'Meter not recognized',
         isOffline: true,
       );
     }
@@ -122,22 +137,37 @@ class ApiService {
         return ApiResult(data: meter);
       } else {
         // Fallback to offline cache
+        final hasCache = await OfflineStorageService.hasOfflineMeters();
+        if (!hasCache) {
+          return ApiResult(
+            errorMessage: 'No meters stored on device. Connect to the internet once to sync the meter list.',
+            isOffline: true,
+          );
+        }
         final cached = await OfflineStorageService.findMeterByNumber(meterNumber);
         if (cached != null) {
           return ApiResult(data: cached, isOffline: true);
         }
         return ApiResult(
-          errorMessage: 'Meter number "$meterNumber" not found on server or local cache.',
+          errorMessage: 'Meter not recognized',
+          isOffline: true,
         );
       }
     } catch (_) {
       // Offline fallback
+      final hasCache = await OfflineStorageService.hasOfflineMeters();
+      if (!hasCache) {
+        return ApiResult(
+          errorMessage: 'No meters stored on device. Connect to the internet once to sync the meter list.',
+          isOffline: true,
+        );
+      }
       final cached = await OfflineStorageService.findMeterByNumber(meterNumber);
       if (cached != null) {
         return ApiResult(data: cached, isOffline: true);
       }
       return ApiResult(
-        errorMessage: 'Network offline. Meter "$meterNumber" is not in local offline storage.',
+        errorMessage: 'Meter not recognized',
         isOffline: true,
       );
     }

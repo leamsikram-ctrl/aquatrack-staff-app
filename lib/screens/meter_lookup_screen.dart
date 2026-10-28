@@ -56,9 +56,39 @@ class _MeterLookupScreenState extends State<MeterLookupScreen> {
         ),
       );
     } else {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          backgroundColor: AppTheme.brandWhite,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: Color(0x26000000), width: 1),
+          ),
+          title: const Text(
+            'Meter not recognized',
+            style: TextStyle(
+              fontSize: AppTheme.uniformFontSize,
+              fontWeight: FontWeight.bold,
+              color: AppTheme.brandBlack,
+            ),
+          ),
+          content: Text(
+            result.errorMessage ?? 'Meter "$query" could not be recognized.',
+            style: const TextStyle(fontSize: AppTheme.uniformFontSize, color: AppTheme.brandBlack),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                _queryController.clear();
+              },
+              child: const Text('Try again'),
+            ),
+          ],
+        ),
+      );
       setState(() {
-        _errorMessage = result.errorMessage ??
-            'Meter "$query" could not be found in active records or offline cache.';
+        _errorMessage = result.errorMessage ?? 'Meter not recognized';
       });
     }
   }

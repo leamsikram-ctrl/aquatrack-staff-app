@@ -163,21 +163,51 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                             color: AppTheme.brandBlue,
                           ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: m.status == 'active' ? AppTheme.brandBlue : AppTheme.brandWhite,
-                            border: Border.all(color: AppTheme.brandBlack, width: 1),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            m.status.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: AppTheme.uniformFontSize,
-                              fontWeight: FontWeight.bold,
-                              color: m.status == 'active' ? AppTheme.brandWhite : AppTheme.brandBlack,
+                        Row(
+                          children: [
+                            if (widget.isOfflineResult) ...[
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                margin: const EdgeInsets.only(right: 6),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.brandWhite,
+                                  border: Border.all(color: AppTheme.brandBlack, width: 1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.cloud_off, size: 12, color: AppTheme.brandBlack),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      'OFFLINE',
+                                      style: TextStyle(
+                                        fontSize: AppTheme.uniformFontSize,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.brandBlack,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: m.status == 'active' ? AppTheme.brandBlue : AppTheme.brandWhite,
+                                border: Border.all(color: AppTheme.brandBlack, width: 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                m.status.toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: AppTheme.uniformFontSize,
+                                  fontWeight: FontWeight.bold,
+                                  color: m.status == 'active' ? AppTheme.brandWhite : AppTheme.brandBlack,
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
@@ -191,7 +221,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
 
               const SizedBox(height: 16),
 
-              // Consumer & Service Account Card with Hard Shadow
+              // Customer & Service Account Card with Hard Shadow
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: AppTheme.cardDecoration(),
@@ -199,7 +229,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Linked Consumer Account',
+                      'Linked Customer Account',
                       style: TextStyle(
                         fontSize: AppTheme.uniformFontSize,
                         fontWeight: FontWeight.bold,
@@ -266,7 +296,7 @@ class _AccountDetailsScreenState extends State<AccountDetailsScreen> {
                     const SizedBox(height: 12),
                     OutlinedButton.icon(
                       icon: const Icon(Icons.cloud_download_outlined, size: 16),
-                      label: Text(_isSyncing ? 'Syncing...' : 'Sync Full Sinacaban Meter Registry'),
+                      label: Text(_isSyncing ? 'Syncing...' : 'Sync now'),
                       onPressed: _isSyncing ? null : _handleSyncOfflineDatabase,
                     ),
                   ],

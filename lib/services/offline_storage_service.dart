@@ -36,6 +36,14 @@ class OfflineStorageService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_keyToken);
     await prefs.remove(_keyUser);
+    await prefs.remove(_keyOfflineMeters);
+    await prefs.remove(_keyLastSyncedAt);
+    await prefs.remove(_keyTermsAccepted);
+  }
+
+  static Future<bool> hasOfflineMeters() async {
+    final meters = await getOfflineMeters();
+    return meters.isNotEmpty;
   }
 
   // Terms Acceptance State

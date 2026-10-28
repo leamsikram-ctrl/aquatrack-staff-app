@@ -95,7 +95,7 @@ class _TermsScreenState extends State<TermsScreen> {
                         ),
                         const SizedBox(height: 4),
                         const Text(
-                          'Customer personal data, mobile numbers, service coordinates, and billing statements accessed via this app are strictly confidential under the Philippine Data Privacy Act of 2012. Personnel must never disclose or store consumer information outside the official system.',
+                          'Customer personal data, mobile numbers, service coordinates, and billing statements accessed via this app are strictly confidential under the Philippine Data Privacy Act of 2012. Personnel must never disclose or store customer information outside the official system.',
                           style: TextStyle(
                             fontSize: AppTheme.uniformFontSize,
                             color: AppTheme.brandBlack,
